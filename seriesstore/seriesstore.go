@@ -5,8 +5,10 @@ import (
 )
 
 var (
-	ErrKeyDoesNotExist error = errors.New("Key does not exist")
-	ErrIdxOutOfBounds  error = errors.New("Index out of bounds")
+	// ErrKeyDoesNotExist is thrown when a search key is not found
+	ErrKeyDoesNotExist = errors.New("key does not exist")
+	// ErrIdxOutOfBounds is thrown when given indices for a range are out of bounds
+	ErrIdxOutOfBounds = errors.New("index out of bounds")
 )
 
 // A SeriesStore is a key/value storage that stores a data series

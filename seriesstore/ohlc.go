@@ -11,15 +11,17 @@ type OHLC struct {
 	Close float32
 }
 
+// OHLCSStore is a store of OHLC (Open High Low Close stock ticker prices) slices
 // Implements the SeriesStore interface
-// A store of OHLC slices
-// All get and set functions provide bound checks
+// All getter and setter functions provide bound checks where applicable
 // Embedded sync.Mutex to provide atomic operation ability
 type OHLCSStore struct {
 	sync.Mutex
 	store map[string][]OHLC
 }
 
+// NewOHLCSStore constructs and initializes a new OHLCSStore
+// Always use this function to init new OHLCSStore
 func NewOHLCSStore() *OHLCSStore {
 	return &OHLCSStore{store: make(map[string][]OHLC)}
 }
@@ -28,6 +30,7 @@ func (s *OHLCSStore) set(key string, value []OHLC) {
 	s.store[key] = value
 }
 
+// Set stores the given value mapped to the given key in the store
 func (s *OHLCSStore) Set(key string, value []OHLC) {
 	s.Lock()
 	s.set(key, value)
@@ -52,6 +55,7 @@ func (s *OHLCSStore) setIdx(key string, idx int, value *OHLC) error {
 	return nil
 }
 
+// SetIdx stores the given value mapped to the given key at the specified index in the store
 func (s *OHLCSStore) SetIdx(key string, idx int, value *OHLC) error {
 	s.Lock()
 	v := s.setIdx(key, idx, value)
@@ -67,6 +71,7 @@ func (s *OHLCSStore) get(key string) ([]OHLC, bool) {
 	return v, ok
 }
 
+// Get accesses the value for the given key
 func (s *OHLCSStore) Get(key string) ([]OHLC, bool) {
 	s.Lock()
 	v, ok := s.get(key)
@@ -91,6 +96,7 @@ func (s *OHLCSStore) getIdx(key string, idx int) (OHLC, error) {
 	return s.store[key][idx], nil
 }
 
+// GetIdx accesses the value for the given key at the specified index
 func (s *OHLCSStore) GetIdx(key string, idx int) (OHLC, error) {
 	s.Lock()
 	v, err := s.getIdx(key, idx)
@@ -115,6 +121,7 @@ func (s *OHLCSStore) getRange(key string, lower, upper int) ([]OHLC, error) {
 	return s.store[key][lower:upper], nil
 }
 
+// GetRange gets all values for the given key within the specified range (inclusive:exclusive)
 func (s *OHLCSStore) GetRange(key string, lower, upper int) ([]OHLC, error) {
 	s.Lock()
 	v, err := s.getRange(key, lower, upper)
@@ -127,6 +134,8 @@ func (s *OHLCSStore) size() int {
 	return len(s.store)
 }
 
+// Size returns the current size of the store
+// Note: this is NOT capacity
 func (s *OHLCSStore) Size() int {
 	s.Lock()
 	size := s.size()
@@ -147,6 +156,7 @@ func (s *OHLCSStore) members() []string {
 	return mems
 }
 
+// Members returns all member keys of the store
 func (s *OHLCSStore) Members() []string {
 	s.Lock()
 	v := s.members()
@@ -161,6 +171,7 @@ func (s *OHLCSStore) isMember(key string) bool {
 	return ok
 }
 
+// IsMember checks if the given key exists in the store
 func (s *OHLCSStore) IsMember(key string) bool {
 	s.Lock()
 	ok := s.isMember(key)
@@ -180,6 +191,7 @@ func (s *OHLCSStore) memberLen(key string) (int, error) {
 	return len(v), nil
 }
 
+// MemberLen returns the length of the series value stored at the given key
 func (s *OHLCSStore) MemberLen(key string) (int, error) {
 	s.Lock()
 	l, err := s.memberLen(key)
@@ -192,6 +204,7 @@ func (s *OHLCSStore) clear() {
 	s.store = make(map[string][]OHLC)
 }
 
+// Clear deletes all keys in the store
 func (s *OHLCSStore) Clear() {
 	s.Lock()
 	s.clear()

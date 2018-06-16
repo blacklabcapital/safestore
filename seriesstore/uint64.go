@@ -4,15 +4,17 @@ import (
 	"sync"
 )
 
+// Uint64SStore is a store of uint64 slices
 // Implements the SeriesStore interface
-// A store of uint64 slices
-// All get and set functions provide bound checks
+// All getter and setter functions provide bound checks where applicable
 // Embedded sync.Mutex to provide atomic operation ability
 type Uint64SStore struct {
 	sync.Mutex
 	store map[string][]uint64
 }
 
+// NewUint64SStore constructs and initializes a new Float32SStore
+// Always use this function to init new Uint64SStore
 func NewUint64SStore() *Uint64SStore {
 	return &Uint64SStore{store: make(map[string][]uint64)}
 }
@@ -21,6 +23,7 @@ func (s *Uint64SStore) set(key string, value []uint64) {
 	s.store[key] = value
 }
 
+// Set stores the given value mapped to the given key in the store
 func (s *Uint64SStore) Set(key string, value []uint64) {
 	s.Lock()
 	s.set(key, value)
@@ -45,6 +48,7 @@ func (s *Uint64SStore) setIdx(key string, idx int, value uint64) error {
 	return nil
 }
 
+// SetIdx stores the given value mapped to the given key at the specified index in the store
 func (s *Uint64SStore) SetIdx(key string, idx int, value uint64) error {
 	s.Lock()
 	err := s.setIdx(key, idx, value)
@@ -60,6 +64,7 @@ func (s *Uint64SStore) get(key string) ([]uint64, bool) {
 	return v, ok
 }
 
+// Get accesses the value for the given key
 func (s *Uint64SStore) Get(key string) ([]uint64, bool) {
 	s.Lock()
 	v, ok := s.get(key)
@@ -84,6 +89,7 @@ func (s *Uint64SStore) getIdx(key string, idx int) (uint64, error) {
 	return s.store[key][idx], nil
 }
 
+// GetIdx accesses the value for the given key at the specified index
 func (s *Uint64SStore) GetIdx(key string, idx int) (uint64, error) {
 	s.Lock()
 	v, err := s.getIdx(key, idx)
@@ -108,6 +114,7 @@ func (s *Uint64SStore) getRange(key string, lower, upper int) ([]uint64, error) 
 	return s.store[key][lower:upper], nil
 }
 
+// GetRange gets all values for the given key within the specified range (inclusive:exclusive)
 func (s *Uint64SStore) GetRange(key string, lower, upper int) ([]uint64, error) {
 	s.Lock()
 	v, err := s.getRange(key, lower, upper)
@@ -120,6 +127,8 @@ func (s *Uint64SStore) size() int {
 	return len(s.store)
 }
 
+// Size returns the current size of the store
+// Note: this is NOT capacity
 func (s *Uint64SStore) Size() int {
 	s.Lock()
 	size := s.size()
@@ -140,6 +149,7 @@ func (s *Uint64SStore) members() []string {
 	return mems
 }
 
+// Members returns all member keys of the store
 func (s *Uint64SStore) Members() []string {
 	s.Lock()
 	v := s.members()
@@ -154,6 +164,7 @@ func (s *Uint64SStore) isMember(key string) bool {
 	return ok
 }
 
+// IsMember checks if the given key exists in the store
 func (s *Uint64SStore) IsMember(key string) bool {
 	s.Lock()
 	ok := s.isMember(key)
@@ -173,6 +184,7 @@ func (s *Uint64SStore) memberLen(key string) (int, error) {
 	return len(v), nil
 }
 
+// MemberLen returns the length of the series value stored at the given key
 func (s *Uint64SStore) MemberLen(key string) (int, error) {
 	s.Lock()
 	l, err := s.memberLen(key)
@@ -185,6 +197,7 @@ func (s *Uint64SStore) clear() {
 	s.store = make(map[string][]uint64)
 }
 
+// Clear deletes all keys in the store
 func (s *Uint64SStore) Clear() {
 	s.Lock()
 	s.clear()
