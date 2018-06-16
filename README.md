@@ -2,15 +2,22 @@
 
 [![CircleCI](https://circleci.com/gh/blacklabcapital/safestore.svg?style=svg)](https://circleci.com/gh/blacklabcapital/safestore)
 
+#### primitivestore
+[![GoDoc](https://godoc.org/github.com/blacklabcapital/safestore/primitivestore?status.svg)](https://godoc.org/github.com/blacklabcapital/safestore/primitivestore)
+
+#### seriesstore
+[![GoDoc](https://godoc.org/github.com/blacklabcapital/safestore/seriesstore?status.svg)](https://godoc.org/github.com/blacklabcapital/safestore/seriesstore)
 
 
 ## Description
 
 `safestore` is a Go package providing simple, useful, performant, O(1) access map-based key/value data storage implementations that offer atomic update and access methods safe for concurrent use.
 
-Reuse is a key tenant of this package. How many times have you had to rewrite/reuse the same design patterns to support concurrent go routine access data stores? *Spoiler alert, we all know the answer. A LOT.*
+Reuse is a key tenant of this package.
+How many times have you had to rewrite/reuse the same design patterns to support concurrent go routine access data stores? *Spoiler alert, we all know the answer. A LOT.*
 
-`safestore` seeks to be a general purpose "one-stop-shop" for any kind of <u>well tested</u> atomic/concurrent safe data store. No more boiler plate code for what we thought were "specialized" use cases...eventually someone else will ~~probably~~ definitely need the same thing!
+`safestore` seeks to be a general purpose "one-stop-shop" for any kind of <u>well tested</u> atomic/concurrent safe data store.
+No more boiler plate code for what we thought were "specialized" use cases...eventually someone else will ~~probably~~ definitely need the same thing!
 
 *tl;dr* custom data type implementations are supported and encouraged.
 
@@ -18,9 +25,12 @@ Reuse is a key tenant of this package. How many times have you had to rewrite/re
 
 ## Design
 
-The types in this package follow a traditional **OOP** design pattern, with the use of explicit *getter and setter* methods on all types. This is used to provide control over read/writes of the underlying data store, and to abstract away other private method behavior from the caller.
+The types in this package follow a traditional **OOP** design pattern, with the use of explicit *getter and setter* methods on all types.
+This is used to provide control over read/writes of the underlying data store, and to abstract away other private method behavior from the caller.
 
-Atomicity is provided via use of an embedded `sync.mutex` in each type struct. Although only minor performance gains, the package conventionally avoids defering sync.Mutex Unlock() calls and instead explictly Lock() and Unlock() inline. Runtime defer calls do in fact add excess overhead. See https://github.com/golang/go/issues/14939
+Atomicity is provided via use of an embedded `sync.mutex` in each type struct.
+Although only minor performance gains, the package conventionally avoids defering sync.Mutex Unlock() calls and instead explicitly Lock() and Unlock() inline.
+Runtime defer calls do in fact add excess overhead. See https://github.com/golang/go/issues/14939
 
 
 
@@ -35,11 +45,12 @@ The library has extensive unit tests which also double as examples for common us
 
 #### primitivestore
 
-contains data stores for primitive or complex primitive data type values, such as `int`, `bool`, and `float`, or custom single occurence structs, among others.
+contains data stores for primitive or complex primitive data type values, such as `int`, `bool`, and `float`, or custom single occurrence structs, among others.
 
 #### seriesstore
 
-contains data stores for *collection* type values , such as an array or set, which can store multiple occurences of a primitive or complex primitive data type. Unique methods for this subpackage include functions for accessing a specific index or key in the collection value, or a range of values, all of which are safe for concurrent use.
+contains data stores for *collection* type values, such as an array or set, which can store multiple occurrences of a primitive or complex primitive data type.
+Unique methods for this subpackage include functions for accessing a specific index or key in the collection value, or a range of values, all of which are safe for concurrent use.
 
 
 
