@@ -8,7 +8,7 @@
 
 `safestore` is a Go package providing simple, useful, performant, O(1) access map-based key/value data storage implementations that offer atomic update and access methods safe for concurrent use.
 
-Reusability is a key tenant of this package. How many times have you had to rewrite/reuse the same design patterns to support concurrent go routine access data stores? *Spoiler alert, we all know the answer. A LOT.* 
+Reuse is a key tenant of this package. How many times have you had to rewrite/reuse the same design patterns to support concurrent go routine access data stores? *Spoiler alert, we all know the answer. A LOT.*
 
 `safestore` seeks to be a general purpose "one-stop-shop" for any kind of <u>well tested</u> atomic/concurrent safe data store. No more boiler plate code for what we thought were "specialized" use cases...eventually someone else will ~~probably~~ definitely need the same thing!
 
@@ -25,8 +25,9 @@ Atomicity is provided via use of an embedded `sync.mutex` in each type struct. A
 
 
 ## Usage
+`import "github.com/blacklabcapital/safestore"`
 
-`safestore `currently contains two subpackages,`primitivestore` and `seriesstore`.
+`safestore `currently contains two sub-packages,`primitivestore` and `seriesstore`.
 
 The package can be and has been used in real time low-latency environments, and performs effectively even in microsecond latency environments.
 
