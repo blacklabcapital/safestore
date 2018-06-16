@@ -71,7 +71,7 @@ func (s *OHLCSStore) get(key string) ([]OHLC, bool) {
 	return v, ok
 }
 
-// Get accesses the value for the given key
+// Get returns the value for the given key
 func (s *OHLCSStore) Get(key string) ([]OHLC, bool) {
 	s.Lock()
 	v, ok := s.get(key)
@@ -96,7 +96,7 @@ func (s *OHLCSStore) getIdx(key string, idx int) (OHLC, error) {
 	return s.store[key][idx], nil
 }
 
-// GetIdx accesses the value for the given key at the specified index
+// GetIdx returns the value for the given key at the specified index
 func (s *OHLCSStore) GetIdx(key string, idx int) (OHLC, error) {
 	s.Lock()
 	v, err := s.getIdx(key, idx)
@@ -121,7 +121,7 @@ func (s *OHLCSStore) getRange(key string, lower, upper int) ([]OHLC, error) {
 	return s.store[key][lower:upper], nil
 }
 
-// GetRange gets all values for the given key within the specified range (inclusive:exclusive)
+// GetRange returns all values for the given key within the specified range (inclusive:exclusive)
 func (s *OHLCSStore) GetRange(key string, lower, upper int) ([]OHLC, error) {
 	s.Lock()
 	v, err := s.getRange(key, lower, upper)
@@ -156,7 +156,7 @@ func (s *OHLCSStore) members() []string {
 	return mems
 }
 
-// Members returns all member keys of the store
+// Members returns all keys of the store
 func (s *OHLCSStore) Members() []string {
 	s.Lock()
 	v := s.members()

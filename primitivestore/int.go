@@ -4,14 +4,16 @@ import (
 	"sync"
 )
 
+// IntStore is a store of ints
 // Implements the PrimitiveStore interface
-// A store of Ints
 // Embedded sync.Mutex to provide atomic operation ability
 type IntStore struct {
 	sync.Mutex
 	store map[string]int
 }
 
+// NewIntStore constructs and initializes a new IntStore
+// Always use this function when creating a new IntStore
 func NewIntStore() *IntStore {
 	return &IntStore{store: make(map[string]int)}
 }
@@ -20,6 +22,7 @@ func (s *IntStore) set(key string, value int) {
 	s.store[key] = value
 }
 
+// Set stores the given value mapped to the given key
 func (s *IntStore) Set(key string, value int) {
 	s.Lock()
 	s.set(key, value)
@@ -33,6 +36,7 @@ func (s *IntStore) get(key string) (int, bool) {
 	return v, ok
 }
 
+// Get returns the value for the given key
 func (s *IntStore) Get(key string) (int, bool) {
 	s.Lock()
 	v, ok := s.get(key)
@@ -45,6 +49,8 @@ func (s *IntStore) size() int {
 	return len(s.store)
 }
 
+// Size returns the current size of the store
+// Note: this is NOT capacity
 func (s *IntStore) Size() int {
 	s.Lock()
 	size := s.size()
@@ -65,6 +71,7 @@ func (s *IntStore) members() []string {
 	return mems
 }
 
+// Members returns all keys of the store
 func (s *IntStore) Members() []string {
 	s.Lock()
 	mems := s.members()
@@ -79,6 +86,7 @@ func (s *IntStore) isMember(key string) bool {
 	return ok
 }
 
+// IsMember checks if the given key exists in the store
 func (s *IntStore) IsMember(key string) bool {
 	s.Lock()
 	ok := s.isMember(key)
@@ -91,6 +99,7 @@ func (s *IntStore) clear() {
 	s.store = make(map[string]int)
 }
 
+// Clear deletes all keys in the store
 func (s *IntStore) Clear() {
 	s.Lock()
 	s.clear()

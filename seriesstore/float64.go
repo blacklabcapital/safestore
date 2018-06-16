@@ -64,7 +64,7 @@ func (s *Float64SStore) get(key string) ([]float64, bool) {
 	return v, ok
 }
 
-// Get accesses the value for the given key
+// Get returns the value for the given key
 func (s *Float64SStore) Get(key string) ([]float64, bool) {
 	s.Lock()
 	v, ok := s.get(key)
@@ -89,7 +89,7 @@ func (s *Float64SStore) getIdx(key string, idx int) (float64, error) {
 	return s.store[key][idx], nil
 }
 
-// GetIdx accesses the value for the given key at the specified index
+// GetIdx returns the value for the given key at the specified index
 func (s *Float64SStore) GetIdx(key string, idx int) (float64, error) {
 	s.Lock()
 	v, err := s.getIdx(key, idx)
@@ -114,7 +114,7 @@ func (s *Float64SStore) getRange(key string, lower, upper int) ([]float64, error
 	return s.store[key][lower:upper], nil
 }
 
-// GetRange gets all values for the given key within the specified range (inclusive:exclusive)
+// GetRange returns all values for the given key within the specified range (inclusive:exclusive)
 func (s *Float64SStore) GetRange(key string, lower, upper int) ([]float64, error) {
 	s.Lock()
 	v, err := s.getRange(key, lower, upper)
@@ -149,7 +149,7 @@ func (s *Float64SStore) members() []string {
 	return mems
 }
 
-// Members returns all member keys of the store
+// Members returns all keys of the store
 func (s *Float64SStore) Members() []string {
 	s.Lock()
 	v := s.members()
